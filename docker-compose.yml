@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  pebmed-api:
+    container_name: pebmed-api
+    build: .
+    command: yarn dev:server
+    volumes:
+      - .:/app/
+    environment:
+      PORT: 8000
+      DBAAS_MYSQL_HOSTS: postgres
+      DBAAS_MYSQL_PORT: 5432
+      DBAAS_MYSQL_USER: pebmed
+      DBAAS_MYSQL_PASSWORD: admin2020
+      #CORS_WHITELIST:
+      NODE_ENV: development
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres-service
+    links:
+      - postgres-service
+
+  postgres-service:
+    image: postgres
+    volumes:
+      - ./src/database/postgresql/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: "pebmed_desafio"
+      POSTGRES_USER: "pebmed"
+      POSTGRES_PASSWORD: "admin2020"
+    ports:
+      - "5432:5432"

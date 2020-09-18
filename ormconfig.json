@@ -1,9 +1,9 @@
 {
   "type": "postgres",
-  "host": "localhost",
+  "host": "postgres-service",
   "port": 5432,
-  "username": "postgres",
-  "password": "admin",
+  "username": "pebmed",
+  "password": "admin2020",
   "database": "pebmed_desafio",
   "entities": [
       "./src/models/*.ts"
