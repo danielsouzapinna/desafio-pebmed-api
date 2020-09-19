@@ -16,11 +16,11 @@ class Patient {
   @Column()
   gender: string;
 
-  @Column()
-  height: number;
+  @Column('float')
+  height: null;
 
-  @Column()
-  weight: number;
+  @Column('float')
+  weight: null;
 
   @Column()
   telephone: string;
