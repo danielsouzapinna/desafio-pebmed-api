@@ -1,0 +1,137 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+      "version": "1.0.0",
+      "title": "PEBMED-API",
+      "description": "PEBMED-API is part of the challenge project.",
+      "license": {
+          "name": "MIT",
+          "url": "https://opensource.org/licenses/MIT"
+      }
+  },
+  "tags": [
+    {
+      "name": "Patients",
+      "description": "API for patients in the system"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/patients": {
+      "get": {
+        "tags": [
+          "Patients"
+        ],
+        "summary": "Get all patients in system",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Patients"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Patients"
+        ],
+        "summary": "Create a new patient in system",
+        "requestBody": {
+          "description": "Patient Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Patient"
+              },
+              "example": {
+                "name": "Patient Test",
+                "dateBirth": "1984-04-13T12:00:00.414Z",
+                "gender": "male",
+                "height": 1.81,
+                "weight": 83,
+                "telephone": "21999999999"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Patient"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Patient": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "dateBirth": {
+          "type": "Date"
+        },
+        "gender": {
+          "type": "string"
+        },
+        "height": {
+          "type": "float"
+        },
+        "weight": {
+          "type": "float"
+        },
+        "telephone": {
+          "type": "string"
+        }
+      }
+    },
+    "Patients": {
+      "type": "object",
+      "properties": {
+        "patients": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/Patient"
+          }
+        }
+      }
+    },
+    "Appointment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "date": {
+          "type": "Date"
+        },
+        "note": {
+          "type": "string"
+        },
+        "patient": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/Patient"
+          }
+        }
+      }
+    }
+  }
+}
