@@ -7,7 +7,9 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "dev:server": "yarn && ts-node-dev --transpile-only --ignore node_modules src/server.ts"
+    "dev:server": "yarn && yarn migration:run && ts-node-dev --transpile-only --ignore node_modules src/server.ts",
+    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
+    "migration:run": "ts-node-dev ./node_modules/typeorm/cli.js migration:run"
   },
   "dependencies": {
     "express": "^4.17.1",
