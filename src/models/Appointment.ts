@@ -10,7 +10,7 @@ class Appointment {
   @Column()
   date: Date;
 
-  @Column()
+  @Column({ nullable: true })
   note: string;
 
   @ManyToOne(type => Patient, patient => patient.appointments)
