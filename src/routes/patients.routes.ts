@@ -1,37 +1,18 @@
 import { Router } from 'express';
-import { getRepository } from 'typeorm';
 
-import CreatePatientService from '../services/CreatePatientService';
-import Patient from '../models/Patient';
+import PatientsController from '../controllers/PatientsController';
 
 const patientRouter = Router();
+const patientsController = new PatientsController();
 
-patientRouter.get('/', async (request, response) => {
-  const patientsRepository = getRepository(Patient);
-  const patients = await patientsRepository.find();
+patientRouter.get('/', patientsController.list);
 
-  response.json(patients);
-});
+patientRouter.get('/:id', patientsController.get);
 
-patientRouter.post('/', async (request, response) => {
-  try {
-    const { name, dateBirth, gender, height, weight, telephone } = request.body;
+patientRouter.post('/', patientsController.create);
 
-    const createPatient = new CreatePatientService();
+patientRouter.put('/', patientsController.update);
 
-    const patient = await createPatient.execute({
-      name,
-      dateBirth,
-      gender,
-      height,
-      weight,
-      telephone,
-    });
-
-    return response.json(patient);
-  } catch (error) {
-    return response.status(400).json({ message: error.message });
-  }
-});
+patientRouter.delete('/:id', patientsController.delete);
 
 export default patientRouter;
