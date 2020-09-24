@@ -1,22 +1,24 @@
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
 
-import Appointment from '../models/Appointment';
-import Patient from '../models/Patient';
+import logger from '../winston-custom-log';
+import UpdateAppointmentNoteService from '../services/appointments/UpdateAppointmentNoteService';
 
-export default class AppointmentsController {
+export default class AppointmentNoteController {
   public async update(request: Request, response: Response): Promise<Response> {
+    logger.info(`AppointmentNoteController::update => Initializing appointment note update`);
     try {
       const { id, note } = request.body;
 
-      const appointmentRepository = getRepository(Appointment);
-      const appointment = await appointmentRepository.findOne(id);
-      appointment.note = note;
+      const updateAppointmentNote = new UpdateAppointmentNoteService();
+      const appointment = await updateAppointmentNote.execute({
+        id,
+        note,
+      });
 
-      await appointmentRepository.save(appointment);
-      return response.status(204).json(appointment);
+      return response.status(200).json(appointment);
     } catch (error) {
-      return response.status(400).json({ message: error.message });
+      logger.error(`AppointmentNoteController::update => Error on update: ${error}`);
+      return response.status(error.statusCode).json({ message: error.message });
     }
   }
 }
