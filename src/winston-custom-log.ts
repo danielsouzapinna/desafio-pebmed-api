@@ -13,6 +13,10 @@ const logger = winston.createLogger({
       datePattern: 'DD-MM-YYYY',
       maxSize: '20m',
       maxFiles: '14d',
+      options: {
+        mode: 0o666,
+        flags: 'a',
+      },
     }),
     new winston.transports.Console({
       level: 'info',
