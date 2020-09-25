@@ -1,4 +1,4 @@
-import { getRepository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import Patient from '../../models/Patient';
 import AppError from '../../errors/AppErrors';
@@ -15,10 +15,8 @@ interface Request {
 }
 
 class UpdatePatientService {
-  public async execute(patientData: Request): Promise<Patient | undefined> {
+  public async execute(patientData: Request, patientRepository: Repository<Patient> | any): Promise<Patient> {
     logger.info(`UpdatePatientService => Initializing updating patient: ${JSON.stringify(patientData)}`);
-    const patientRepository = getRepository(Patient);
-
     const patient = await patientRepository.findOne(patientData.id);
 
     if (!patient) {

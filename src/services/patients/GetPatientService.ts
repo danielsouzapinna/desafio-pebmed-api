@@ -1,4 +1,4 @@
-import { getRepository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import Patient from '../../models/Patient';
 import AppError from '../../errors/AppErrors';
@@ -9,9 +9,8 @@ interface Request {
 }
 
 class GetPatientService {
-  public async execute({ id }: Request): Promise<Patient | undefined> {
+  public async execute({ id }: Request, patientRepository: Repository<Patient> | any): Promise<Patient> {
     logger.info(`GetPatientService => Initializing get patient for id: ${id}`);
-    const patientRepository = getRepository(Patient);
 
     const patient = await patientRepository.findOne(id);
 

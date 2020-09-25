@@ -1,4 +1,4 @@
-import { getRepository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import Patient from '../../models/Patient';
 import Appointment from '../../models/Appointment';
@@ -17,11 +17,8 @@ interface Request {
 }
 
 class UpdateAppointmentService {
-  public async execute(appointmentData: Request): Promise<Appointment | undefined> {
+  public async execute(appointmentData: Request, patientRepository: Repository<Patient> | any, appointmentRepository: Repository<Appointment> | any): Promise<Appointment> {
     logger.info(`UpdateAppointmentService => Initializing updating appointment for appointment: ${JSON.stringify(appointmentData)}`);
-    const patientRepository = getRepository(Patient);
-    const appointmentRepository = getRepository(Appointment);
-
     const patientFounded = await patientRepository.findOne(appointmentData.patient.id);
 
     if (!patientFounded) {

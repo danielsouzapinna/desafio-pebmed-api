@@ -1,4 +1,4 @@
-import { getRepository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import Patient from '../../models/Patient';
 import logger from '../../winston-custom-log';
@@ -13,9 +13,8 @@ interface Request {
 }
 
 class CreatePatientService {
-  public async execute(patientData: Request): Promise<Patient> {
+  public async execute(patientData: Request, patientRepository: Repository<Patient> | any): Promise<Patient> {
     logger.info(`CreatePatientService => Initializing creating patient: ${JSON.stringify(patientData)}`);
-    const patientRepository = getRepository(Patient);
 
     // Some business rule to prevent duplicate records would be a good idea
 

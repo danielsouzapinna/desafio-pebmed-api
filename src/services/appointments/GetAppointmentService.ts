@@ -1,4 +1,4 @@
-import { getRepository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import Appointment from '../../models/Appointment';
 import AppError from '../../errors/AppErrors';
@@ -9,10 +9,8 @@ interface Request {
 }
 
 class GetAppointmentService {
-  public async execute({ id }: Request): Promise<Appointment | undefined> {
+  public async execute({ id }: Request, appointmentRepository: Repository<Appointment> | any): Promise<Appointment> {
     logger.info(`GetAppointmentService => Initializing geting appointment for appointment id: ${id}`);
-    const appointmentRepository = getRepository(Appointment);
-
     const appointment = await appointmentRepository.findOne(id);
 
     if (!appointment) {

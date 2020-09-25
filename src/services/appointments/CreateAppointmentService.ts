@@ -1,4 +1,4 @@
-import { getRepository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import Patient from '../../models/Patient';
 import Appointment from '../../models/Appointment';
@@ -11,11 +11,8 @@ interface Request {
 }
 
 class CreateAppointmentService {
-  public async execute({ patientId, appointmentDate }: Request): Promise<Appointment> {
+  public async execute({ patientId, appointmentDate }: Request, patientRepository: Repository<Patient> | any, appointmentRepository: Repository<Appointment> | any): Promise<Appointment> {
     logger.info(`CreateAppointmentService => Initializing creating appointment for patientId: ${patientId} on date: ${appointmentDate}`);
-    const patientRepository = getRepository(Patient);
-    const appointmentRepository = getRepository(Appointment);
-
     const patient = await patientRepository.findOne(patientId);
 
     if (!patient) {
