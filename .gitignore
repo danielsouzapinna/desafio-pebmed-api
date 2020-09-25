@@ -2,4 +2,7 @@
 node_modules/
 yarn-error.log
 yarn.lock
-logs/
+coverage/
+
+logs/*
+!logs/.gitkeep
