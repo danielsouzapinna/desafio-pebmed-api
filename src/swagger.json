@@ -13,6 +13,10 @@
     {
       "name": "Patients",
       "description": "API for patients in the system"
+    },
+    {
+      "name": "Appointments",
+      "description": "API for appointments in the system"
     }
   ],
   "consumes": [
@@ -31,9 +35,28 @@
         "responses": {
           "200": {
             "description": "Success",
-            "schema": {
-              "$ref": "#/definitions/Patients"
+            "content": {
+              "schema": {
+                "example": [{
+                  "id": "52a23d20-3767-47a9-ab40-852af00034c9",
+                  "name": "Patient Test",
+                  "dateBirth": "1984-04-13T12:00:00.414Z",
+                  "gender": "male",
+                  "height": 1.80,
+                  "weight": 83,
+                  "telephone": "21-99999-9999",
+                  "created_at": "2020-09-25T10:27:36.036Z",
+                  "updated_at": "2020-09-25T10:27:36.036Z",
+                  "appointments": []
+                }]
+              }
             }
+          },
+          "400": {
+            "description": "Bad Request."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -56,7 +79,7 @@
                 "gender": "male",
                 "height": 1.81,
                 "weight": 83,
-                "telephone": "21999999999"
+                "telephone": "21-99999-9999"
               }
             }
           }
@@ -67,12 +90,443 @@
         "responses": {
           "201": {
             "description": "Success",
-            "schema": {
-              "$ref": "#/definitions/Patient"
+            "content": {
+              "schema": {
+                "example": {
+                  "id": "52a23d20-3767-47a9-ab40-852af00034c9"
+                }
+              }
             }
           },
           "400": {
-            "description": "Failed. Bad post data."
+            "description": "Bad Request."
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Patients"
+        ],
+        "summary": "Update a patient in system",
+        "requestBody": {
+          "description": "Patient Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Patient"
+              },
+              "example": {
+                "id": "3e3d7007-b228-45df-a5ec-fcce401eb4ec",
+                "name": "Patient Test Updated",
+                "dateBirth": "1984-04-13T12:00:00.414Z",
+                "gender": "male",
+                "height": 1.81,
+                "weight": 83,
+                "telephone": "21-99999-9999"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "schema": {
+                "example": {
+                  "id": "52a23d20-3767-47a9-ab40-852af00034c9",
+                  "name": "Patient Test",
+                  "dateBirth": "1984-04-13T12:00:00.414Z",
+                  "gender": "male",
+                  "height": 1.80,
+                  "weight": 83,
+                  "telephone": "21-99999-9999",
+                  "created_at": "2020-09-25T10:27:36.036Z",
+                  "updated_at": "2020-09-25T10:27:36.036Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request."
+          },
+          "404": {
+            "description": "Patient Not Found"
+          },
+          "409": {
+            "description": "Patient Already Exists"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/patients/{id}": {
+      "get": {
+        "tags": [
+          "Patients"
+        ],
+        "summary": "Get a specific patient in system",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of patient that wants to get",
+            "required": true,
+            "value": "3e3d7007-b228-45df-a5ec-fcce401eb4ec"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "schema": {
+                "example": {
+                  "id": "52a23d20-3767-47a9-ab40-852af00034c9",
+                  "name": "Patient Test",
+                  "dateBirth": "1984-04-13T12:00:00.414Z",
+                  "gender": "male",
+                  "height": 1.80,
+                  "weight": 83,
+                  "telephone": "21-99999-9999",
+                  "created_at": "2020-09-25T10:27:36.036Z",
+                  "updated_at": "2020-09-25T10:27:36.036Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request."
+          },
+          "404": {
+            "description": "Patient Not Found."
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Patients"
+        ],
+        "summary": "Delete a specific patient in system",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of patient that wants to delete",
+            "required": true,
+            "value": "52a23d20-3767-47a9-ab40-852af00034c9"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request."
+          },
+          "404": {
+            "description": "Patient Not Found."
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/appointments": {
+      "get": {
+        "tags": [
+          "Appointments"
+        ],
+        "summary": "Get all appointments in system",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "schema": {
+                "example": [{
+                  "id": "3e3d7007-b228-45df-a5ec-fcce401eb4ec",
+                  "name": "Patient Test Updated",
+                  "dateBirth": "1984-04-13T12:00:00.414Z",
+                  "gender": "male",
+                  "height": 1.81,
+                  "weight": 83,
+                  "telephone": "21-99999-9999",
+                  "created_at": "2020-09-25T10:27:36.036Z",
+                  "updated_at": "2020-09-25T10:57:26.573Z",
+                  "appointments": [
+                    {
+                      "id": "a8e96ca2-a31f-45ae-b343-47de04977d24",
+                      "date": "2020-09-19T03:47:05.000Z",
+                      "note": null,
+                      "created_at": "2020-09-25T11:26:23.813Z",
+                      "updated_at": "2020-09-25T11:26:23.813Z"
+                    },
+                    {
+                      "id": "693b0b57-3681-49c4-87a2-395067557dd2",
+                      "date": "2020-09-19T03:47:05.000Z",
+                      "note": null,
+                      "created_at": "2020-09-25T11:26:57.804Z",
+                      "updated_at": "2020-09-25T11:26:57.804Z"
+                    }
+                  ]
+                }]
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request."
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Appointments"
+        ],
+        "summary": "Create a new appointment in system",
+        "requestBody": {
+          "description": "Appointment Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Appointment"
+              },
+              "example": {
+                "patientId": "3e3d7007-b228-45df-a5ec-fcce401eb4ec",
+	              "appointmentDate": "2020-09-19T03:47:05"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "schema": {
+                "example": {
+                  "id": "52a23d20-3767-47a9-ab40-852af00034c9"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request."
+          },
+          "404": {
+            "description": "Appointment Not Found."
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Appointments"
+        ],
+        "summary": "Update a appointment in system",
+        "requestBody": {
+          "description": "Appointment Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Appointment"
+              },
+              "example": {
+                "id": "1717237c-6905-4cdb-b06e-72dc858ccb0d",
+                "date": "2020-09-20T03:47:05.176Z",
+                "note": "teste2 sdsdsds",
+                "patient": {
+                  "id": "8b75ef4a-d9e3-4bc3-821c-b8877cdc9294"
+                }
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "schema": {
+                "example": {
+                  "id": "a8e96ca2-a31f-45ae-b343-47de04977d24",
+                  "date": "2020-09-20T03:47:05.176Z",
+                  "note": "teste2 blabla",
+                  "created_at": "2020-09-25T11:26:23.813Z",
+                  "updated_at": "2020-09-25T11:33:18.509Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request."
+          },
+          "404": {
+            "description": "Patient Not Found ou Appointment Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Appointments"
+        ],
+        "summary": "Add or Update a appointment note in system",
+        "requestBody": {
+          "description": "Appointment Note Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Appointment"
+              },
+              "example": {
+                "id": "a8e96ca2-a31f-45ae-b343-47de04977d24",
+                "note": "teste2 patch"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "schema": {
+                "example": {
+                  "id": "0dda34e1-6281-4c42-9bed-5fef239421d6",
+                  "date": "2020-09-19T03:47:05.000Z",
+                  "note": "some note test patch 1111",
+                  "created_at": "2020-09-25T12:40:56.179Z",
+                  "updated_at": "2020-09-25T12:41:25.382Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request."
+          },
+          "404": {
+            "description": "Appointment Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/appointments/{id}": {
+      "get": {
+        "tags": [
+          "Appointments"
+        ],
+        "summary": "Get a specific appointment in system",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of appointment that wants to get",
+            "required": true,
+            "value": "3e3d7007-b228-45df-a5ec-fcce401eb4ec"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "schema": {
+                "example": {
+                  "id": "3e3d7007-b228-45df-a5ec-fcce401eb4ec",
+                  "name": "Patient Test Updated",
+                  "dateBirth": "1984-04-13T12:00:00.414Z",
+                  "gender": "male",
+                  "height": 1.81,
+                  "weight": 83,
+                  "telephone": "21-99999-9999",
+                  "created_at": "2020-09-25T10:27:36.036Z",
+                  "updated_at": "2020-09-25T10:57:26.573Z",
+                  "appointments": [
+                    {
+                      "id": "a8e96ca2-a31f-45ae-b343-47de04977d24",
+                      "date": "2020-09-19T03:47:05.000Z",
+                      "note": null,
+                      "created_at": "2020-09-25T11:26:23.813Z",
+                      "updated_at": "2020-09-25T11:26:23.813Z"
+                    },
+                    {
+                      "id": "693b0b57-3681-49c4-87a2-395067557dd2",
+                      "date": "2020-09-19T03:47:05.000Z",
+                      "note": null,
+                      "created_at": "2020-09-25T11:26:57.804Z",
+                      "updated_at": "2020-09-25T11:26:57.804Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request."
+          },
+          "404": {
+            "description": "Appointment Not Found."
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Appointments"
+        ],
+        "summary": "Delete a specific appointment in system",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of appointment that wants to delete",
+            "required": true,
+            "value": "52a23d20-3767-47a9-ab40-852af00034c9"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request."
+          },
+          "404": {
+            "description": "Appointment Not Found."
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -83,7 +537,8 @@
       "type": "object",
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string",
+          "example": "Patient Test"
         },
         "dateBirth": {
           "type": "Date"
@@ -99,17 +554,12 @@
         },
         "telephone": {
           "type": "string"
-        }
-      }
-    },
-    "Patients": {
-      "type": "object",
-      "properties": {
-        "patients": {
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/definitions/Patient"
-          }
+        },
+        "created_at": {
+          "type": "Date"
+        },
+        "updated_at": {
+          "type": "Date"
         }
       }
     },
@@ -124,6 +574,12 @@
         },
         "note": {
           "type": "string"
+        },
+        "created_at": {
+          "type": "Date"
+        },
+        "updated_at": {
+          "type": "Date"
         },
         "patient": {
           "type": "object",
