@@ -2,6 +2,7 @@ import { Repository } from 'typeorm';
 
 import Patient from '../../models/Patient';
 import logger from '../../winston-custom-log';
+import AppError from '../../errors/AppErrors';
 
 interface Request {
   name: string;
@@ -16,7 +17,14 @@ class CreatePatientService {
   public async execute(patientData: Request, patientRepository: Repository<Patient> | any): Promise<Patient> {
     logger.info(`CreatePatientService => Initializing creating patient: ${JSON.stringify(patientData)}`);
 
-    // Some business rule to prevent duplicate records would be a good idea
+    const patientExist = await patientRepository.findOne({
+      where: { telephone: patientData.telephone },
+    });
+
+    if (patientExist) {
+      logger.warn(`CreateAppointmentService => Patient already exist`);
+      throw new AppError('Patient already exist, check the phone.', 409);
+    }
 
     const patient = patientRepository.create({
       name: patientData.name,
