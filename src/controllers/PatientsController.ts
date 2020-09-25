@@ -15,15 +15,9 @@ export default class PatientsController {
       const { name, dateBirth, gender, height, weight, telephone } = request.body;
 
       const createPatient = new CreatePatientService();
+      const patientRepository = getRepository(Patient);
 
-      const patient = await createPatient.execute({
-        name,
-        dateBirth,
-        gender,
-        height,
-        weight,
-        telephone,
-      });
+      const patient = await createPatient.execute({ name, dateBirth, gender, height, weight, telephone }, patientRepository);
 
       return response.status(201).json(patient.id);
     } catch (error) {
@@ -51,8 +45,9 @@ export default class PatientsController {
       const { id } = request.params;
 
       const getPatient = new GetPatientService();
+      const patientRepository = getRepository(Patient);
 
-      const patient = await getPatient.execute({ id });
+      const patient = await getPatient.execute({ id }, patientRepository);
 
       return response.status(200).json(patient);
     } catch (error) {
@@ -67,16 +62,9 @@ export default class PatientsController {
       const { id, name, dateBirth, gender, height, weight, telephone } = request.body;
 
       const updatePatient = new UpdatePatientService();
+      const patientRepository = getRepository(Patient);
 
-      const patient = await updatePatient.execute({
-        id,
-        name,
-        dateBirth,
-        gender,
-        height,
-        weight,
-        telephone,
-      });
+      const patient = await updatePatient.execute({ id, name, dateBirth, gender, height, weight, telephone }, patientRepository);
 
       return response.status(200).json(patient);
     } catch (error) {
@@ -91,8 +79,9 @@ export default class PatientsController {
       const { id } = request.params;
 
       const deletePatient = new DeletePatientService();
+      const patientRepository = getRepository(Patient);
 
-      await deletePatient.execute({ id });
+      await deletePatient.execute({ id }, patientRepository);
 
       return response.status(204).send();
     } catch (error) {

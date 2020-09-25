@@ -3,6 +3,7 @@ import { getRepository } from 'typeorm';
 
 import logger from '../winston-custom-log';
 import Appointment from '../models/Appointment';
+import Patient from '../models/Patient';
 import CreateAppointmentService from '../services/appointments/CreateAppointmentService';
 import UpdateAppointmentService from '../services/appointments/UpdateAppointmentService';
 import DeleteAppointmentService from '../services/appointments/DeleteAppointmentService';
@@ -15,11 +16,10 @@ export default class AppointmentsController {
       const { patientId, appointmentDate } = request.body;
 
       const createAppointment = new CreateAppointmentService();
+      const patientRepository = getRepository(Patient);
+      const appointmentRepository = getRepository(Appointment);
 
-      const appointment = await createAppointment.execute({
-        appointmentDate,
-        patientId,
-      });
+      const appointment = await createAppointment.execute({ appointmentDate, patientId }, patientRepository, appointmentRepository);
 
       return response.status(201).json(appointment.id);
     } catch (error) {
@@ -63,13 +63,10 @@ export default class AppointmentsController {
       const { id, date, note, patient } = request.body;
 
       const updateAppointment = new UpdateAppointmentService();
+      const patientRepository = getRepository(Patient);
+      const appointmentRepository = getRepository(Appointment);
 
-      const appointment = await updateAppointment.execute({
-        id,
-        date,
-        note,
-        patient,
-      });
+      const appointment = await updateAppointment.execute({ id, date, note, patient }, patientRepository, appointmentRepository);
 
       return response.status(200).json(appointment);
     } catch (error) {
