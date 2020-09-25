@@ -19,7 +19,7 @@ export default class PatientsController {
 
       const patient = await createPatient.execute({ name, dateBirth, gender, height, weight, telephone }, patientRepository);
 
-      return response.status(201).json(patient.id);
+      return response.status(201).json({ id: patient.id });
     } catch (error) {
       logger.error(`PatientsController::create => Error on create: ${error}`);
       return response.status(error.statusCode).json({ message: error.message });
