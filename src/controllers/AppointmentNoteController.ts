@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
+import { getRepository } from 'typeorm';
 
 import logger from '../winston-custom-log';
 import UpdateAppointmentNoteService from '../services/appointments/UpdateAppointmentNoteService';
+import Appointment from '../models/Appointment';
 
 export default class AppointmentNoteController {
   public async update(request: Request, response: Response): Promise<Response> {
@@ -10,10 +12,9 @@ export default class AppointmentNoteController {
       const { id, note } = request.body;
 
       const updateAppointmentNote = new UpdateAppointmentNoteService();
-      const appointment = await updateAppointmentNote.execute({
-        id,
-        note,
-      });
+      const appointmentRepository = getRepository(Appointment);
+
+      const appointment = await updateAppointmentNote.execute({ id, note }, appointmentRepository);
 
       return response.status(200).json(appointment);
     } catch (error) {
