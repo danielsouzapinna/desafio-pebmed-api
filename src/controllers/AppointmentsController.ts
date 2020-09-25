@@ -21,7 +21,7 @@ export default class AppointmentsController {
 
       const appointment = await createAppointment.execute({ appointmentDate, patientId }, patientRepository, appointmentRepository);
 
-      return response.status(201).json(appointment.id);
+      return response.status(201).json({ id: appointment.id });
     } catch (error) {
       logger.error(`AppointmentNoteController::create => Error on create: ${error}`);
       return response.status(error.statusCode).json({ message: error.message });
@@ -47,8 +47,9 @@ export default class AppointmentsController {
       const { id } = request.params;
 
       const getAppointment = new GetAppointmentService();
+      const appointmentRepository = getRepository(Appointment);
 
-      const appointment = await getAppointment.execute({ id });
+      const appointment = await getAppointment.execute({ id }, appointmentRepository);
 
       return response.json(appointment);
     } catch (error) {
@@ -81,8 +82,9 @@ export default class AppointmentsController {
       const { id } = request.params;
 
       const deleteAppointment = new DeleteAppointmentService();
+      const appointmentRepository = getRepository(Appointment);
 
-      await deleteAppointment.execute({ id });
+      await deleteAppointment.execute({ id }, appointmentRepository);
 
       return response.status(204).send();
     } catch (error) {
