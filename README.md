@@ -10,7 +10,7 @@ Os itens abaixo são requisitos para executar a aplicação:
 * ```git clone <this_repo>```: clonar este repositório.
 * ```docker-compose up```: Irá buildar os containers (aplicação e banco de dados) caso não tenham sido buildados e iniciará os mesmos. Quando visualizar a mensagem: "Server started on port 8000!", acesse o seguinte endereço em sua máquina pelo browser "http://localhost:8000".
 
-## Para executar a aplicação:
+## Para executar os testes da aplicação:
 Para rodar os testes, execute o comando abaixo na raiz do projeto:
 ```yarn test```
 
