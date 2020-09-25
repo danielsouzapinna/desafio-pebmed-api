@@ -1,6 +1,7 @@
 import CreatePatientService from '../../../services/patients/CreatePatientService';
 import Patient from '../../../models/Patient';
 import looger from '../../../winston-custom-log';
+import AppError from '../../../errors/AppErrors';
 
 looger.transports[0].silent = true;
 looger.transports[1].silent = true;
@@ -25,14 +26,29 @@ describe('CreatePatient', () => {
     const createPatient = new CreatePatientService();
 
     const db = { getRepository: jest.fn() };
-    const repository = { create: jest.fn(), save: jest.fn() };
+    const repository = { findOne: jest.fn(), create: jest.fn(), save: jest.fn() };
 
     db.getRepository.mockReturnValue(repository);
+    repository.findOne.mockReturnValue(Promise.resolve(undefined));
     repository.create.mockReturnValue(Promise.resolve(patientObject));
     repository.save.mockReturnValue(Promise.resolve(true));
 
     const result = await createPatient.execute(patient, repository);
 
     expect(result.name).toBe(patient.name);
+  });
+
+  it('should not be able to create new patient, because patient already exist', async () => {
+    const createPatient = new CreatePatientService();
+
+    const db = { getRepository: jest.fn() };
+    const repository = { findOne: jest.fn(), create: jest.fn(), save: jest.fn() };
+
+    db.getRepository.mockReturnValue(repository);
+    repository.findOne.mockReturnValue(Promise.resolve({}));
+    repository.create.mockReturnValue(Promise.resolve(patientObject));
+    repository.save.mockReturnValue(Promise.resolve(true));
+
+    expect(createPatient.execute(patient, repository)).rejects.toBeInstanceOf(AppError);
   });
 });

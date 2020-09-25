@@ -45,13 +45,6 @@ describe('GetPatient', () => {
     db.getRepository.mockReturnValue(repository);
     repository.findOne.mockReturnValue(Promise.resolve(undefined));
 
-    expect(
-      getPatient.execute(
-        {
-          id: '145',
-        },
-        repository,
-      ),
-    ).rejects.toBeInstanceOf(AppError);
+    expect(getPatient.execute({ id: '145' }, repository)).rejects.toBeInstanceOf(AppError);
   });
 });
