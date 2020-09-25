@@ -6,3 +6,6 @@ coverage/
 
 logs/*
 !logs/.gitkeep
+
+src/database/postgresql/data/*
+!src/database/postgresql/data/.gitkeep
