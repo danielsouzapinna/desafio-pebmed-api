@@ -25,8 +25,8 @@ patientRouter.post(
       name: Joi.string().required(),
       dateBirth: Joi.date().required(),
       gender: Joi.string().required(),
-      height: Joi.number().required(),
-      weight: Joi.number().required(),
+      height: Joi.string().required(),
+      weight: Joi.string().required(),
       telephone: Joi.string()
         .regex(/^\d{2}-\d{5}-\d{4}$/)
         .required(),
@@ -43,8 +43,8 @@ patientRouter.put(
       name: Joi.string().required(),
       dateBirth: Joi.date().required(),
       gender: Joi.string().required(),
-      height: Joi.number().required(),
-      weight: Joi.number().required(),
+      height: Joi.string().required(),
+      weight: Joi.string().required(),
       telephone: Joi.string()
         .regex(/^\d{2}-\d{5}-\d{4}$/)
         .required(),
