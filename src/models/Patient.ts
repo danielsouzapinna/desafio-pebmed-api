@@ -25,7 +25,7 @@ class Patient {
   @Column()
   telephone: string;
 
-  @OneToMany(type => Appointment, appointment => appointment.patient)
+  @OneToMany(type => Appointment, appointment => appointment.patient, { onDelete: 'CASCADE' })
   appointments: Appointment[];
 
   @CreateDateColumn()

@@ -13,7 +13,7 @@ class Appointment {
   @Column({ nullable: true })
   note: string;
 
-  @ManyToOne(type => Patient, patient => patient.appointments)
+  @ManyToOne(type => Patient, patient => patient.appointments, { onDelete: 'CASCADE' })
   patient: Patient;
 
   @CreateDateColumn()
