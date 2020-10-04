@@ -12,7 +12,7 @@ class GetPatientService {
   public async execute({ id }: Request, patientRepository: Repository<Patient> | any): Promise<Patient> {
     logger.info(`GetPatientService => Initializing get patient for id: ${id}`);
 
-    const patient = await patientRepository.findOne(id);
+    const patient = await patientRepository.findOne(id, { relations: ['appointments'] });
 
     if (!patient) {
       logger.warn(`GetPatientService => Patient not found`);
